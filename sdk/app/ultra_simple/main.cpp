@@ -210,28 +210,28 @@ int main(int argc, const char * argv[]) {
     //std::ofstream myfile;
     myfile.open ("lidarData.csv");
     // fetech result and print it out...
-    //while (1) {
-        //rplidar_response_measurement_node_hq_t nodes[8192];
-        //size_t   count = _countof(nodes);
+    while (1) {
+        rplidar_response_measurement_node_hq_t nodes[8192];
+        size_t   count = _countof(nodes);
 
         op_result = drv->grabScanDataHq(nodes, count);
 
         if (IS_OK(op_result)) {
             drv->ascendScanData(nodes, count);
             for (int pos = 0; pos < (int)count ; ++pos) {
-              myfile << nodes[pos].angle_z_q14 * 90.f / (1 << 14) << "," << nodes[pos].dist_mm_q2/4.0f << "\n";
-                /*printf("%s theta: %03.2f Dist: %8.0f Q: %d \n",
+              //myfile << nodes[pos].angle_z_q14 * 90.f / (1 << 14) << "," << nodes[pos].dist_mm_q2/4.0f << "\n";
+                printf("%s theta: %03.2f Dist: %8.0f Q: %d \n",
                     (nodes[pos].flag & RPLIDAR_RESP_MEASUREMENT_SYNCBIT) ?"S ":"  ",
                     (nodes[pos].angle_z_q14 * 90.f / (1 << 14)),
                     nodes[pos].dist_mm_q2/4.0f,
-                    nodes[pos].quality);*/
+                    nodes[pos].quality);
             }
         }
 
-        //if (ctrl_c_pressed){
-        //    break;
-        //}
-    //}
+        if (ctrl_c_pressed){
+            break;
+        }
+    }
 
     drv->stop();
     drv->stopMotor();
